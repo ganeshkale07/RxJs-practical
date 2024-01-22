@@ -11,7 +11,7 @@ export class AboutComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    //WHAT ARE STREAMS
+    //Things I learn - WHAT ARE STREAMS
 
     //streams === observables
     //create blue print of streams
