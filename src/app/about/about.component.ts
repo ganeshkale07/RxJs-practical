@@ -30,7 +30,7 @@ export class AboutComponent implements OnInit {
 
     //Creating My own HTTP observable 😀
 
-    const courses$ = new Observable(observer => {
+    const http$ = new Observable(observer => {
       fetch('http://localhost:9090/api/courses')
         .then(response => response.json())
         .then(body => {
@@ -42,7 +42,7 @@ export class AboutComponent implements OnInit {
 
     })
 
-    courses$.subscribe(
+    http$.subscribe(
       courses => console.log(courses),
       //If do not have error handling for now
       //so () => {} instead of writing these 
@@ -50,6 +50,9 @@ export class AboutComponent implements OnInit {
       noop,
       () => console.log("Completed")
     )
+
+    //Operators 
+    //deriving observable form another observable
 
 
   }
