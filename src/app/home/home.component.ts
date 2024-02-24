@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         //common utility function to create separate stream of observable
-        const http$ = createHttpObservableForCourses();
+        const http$ = createHttpObservableForCourses('http://localhost:9001/api/courses');
         const courses$: Observable<Course[]> = http$.pipe(
             tap(val => console.log(val['payload'])),
             map(res => res['payload']),

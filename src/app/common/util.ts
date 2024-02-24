@@ -1,9 +1,14 @@
 import { Observable } from "rxjs";
 
 //courses observable return from http request
-export function createHttpObservableForCourses() {
+export function createHttpObservableForCourses(url: string) {
     return new Observable(observer => {
-        fetch('http://localhost:9001/api/courses')
+        //These functionality provided by fetch API
+        // we can bort fetch api call in between even it is promise
+        let abortController = new AbortController();
+        let signal = abortController.signal;
+
+        fetch(url, { signal })
             .then((response) => {
                 //will receive response object
                 //to extract body from response object in json format we use json method
@@ -15,6 +20,8 @@ export function createHttpObservableForCourses() {
                 observer.complete();
             })
             .catch(error => observer.error(error))
+        //we are returning these function to call unsubscribe on it 
+        return () => abortController.abort();
 
     })
 }   

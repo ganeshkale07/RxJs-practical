@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable, fromEvent, interval, noop } from "rxjs";
+import { createHttpObservableForCourses } from "../common/util";
 
 @Component({
   selector: 'about',
@@ -31,7 +32,7 @@ export class AboutComponent implements OnInit {
     //Creating My own HTTP observable 😀
 
     const http$ = new Observable(observer => {
-      fetch('http://localhost:9090/api/courses')
+      fetch('http://localhost:9001/api/courses')
         .then(response => response.json())
         .then(body => {
           observer.next(body);
@@ -54,6 +55,22 @@ export class AboutComponent implements OnInit {
     //Operators 
     //deriving observable form another observable
 
+
+    //What If I have to cancel the observable in between 
+    const interval1$ = interval(1000);
+
+    let interval1$Sub = interval1$.subscribe(console.log);
+
+    //Normally way we can unsubscribe from observable with help of setTimeout 
+    setTimeout(() => interval1$Sub.unsubscribe(), 5000);
+
+
+    //How can we CANCEL Actual API call 
+    let cousrses$Sub = createHttpObservableForCourses('http://localhost:9001/api/courses').subscribe((val) => {
+      console.log(val)
+    })
+
+    setTimeout(() => cousrses$Sub.unsubscribe(), 0)
 
   }
 
