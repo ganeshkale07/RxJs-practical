@@ -16,7 +16,7 @@ export class AboutComponent implements OnInit {
     //streams === observables
     //create blue print of streams
 
-    //Blur print - definition - declaration --> They know now what to do
+    //Blue print - definition - declaration --> They know now what to do
     const interval$ = interval(1000); //Hanuman
     //Just blurprint or definition not enough
     //they do not know what to do with it 
