@@ -17,7 +17,11 @@ export function createHttpObservableForCourses(url: string) {
                 //will receive response object
                 //to extract body from response object in json format we use json method
                 //parsing to json format will take time it is async process 
-                return response.json()
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    return observer.error("Error occured on server side!")
+                }
             })
             .then((body) => {
                 observer.next(body);
