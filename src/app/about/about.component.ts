@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Observable, fromEvent, interval, noop } from "rxjs";
+import { AsyncSubject, BehaviorSubject, Observable, ReplaySubject, Subject, Subscriber, asyncScheduler, fromEvent, interval, noop, observable } from "rxjs";
 import { createHttpObservableForCourses } from "../common/util";
 
 @Component({
@@ -62,7 +62,7 @@ export class AboutComponent implements OnInit {
     let interval1$Sub = interval1$.subscribe(console.log);
 
     //Normally way we can unsubscribe from observable with help of setTimeout 
-    setTimeout(() => interval1$Sub.unsubscribe(), 5000);
+    setTimeout(() => interval1$Sub.unsubscribe(), 2000);
 
 
     //How can we CANCEL Actual API call 
@@ -71,6 +71,45 @@ export class AboutComponent implements OnInit {
     })
 
     setTimeout(() => cousrses$Sub.unsubscribe(), 0)
+
+
+    //what are subjects - they can behave like observable and observer BOTH
+    //We prefer creating observable with fromPromise() | from() | of() | formEVent(HTML_ELE , HTML_EVENT)
+
+    //Important 
+    //mySubject is observer here we can call next() | error() | complete() 
+    const mySubject = new BehaviorSubject(88);
+
+    //using asObservable() because as we do not want anyboday else emit value in out observable
+    const mySubject$ = mySubject.asObservable();
+    mySubject$.subscribe(val => console.log("First sub", val));
+
+    mySubject.next(11);
+    mySubject.next(22);
+    mySubject.next(33);
+
+    mySubject.complete();
+
+    //Subject
+    // what if I am Subscribing to subject later in time
+    //Then old emitted data stream won't be available to me 
+
+    //ReplaySubject - even after complete it will work
+    //If I want replay of all values later in time subscription 
+
+    //BehaviorSubject - after complete it will not work
+    //It will always have by default value 
+    //and last emitted value in case of late subscription condition is that subcription should not happen after completion 
+
+    //AsyncSubject - even after complete it will work
+    //what ever value emitted by observable before complete it will share with all observer 
+    //even subscription happen later in time
+
+    setTimeout(() => {
+      mySubject$.subscribe(val => console.log("second sub", val));
+    }, 1000);
+
+
 
   }
 

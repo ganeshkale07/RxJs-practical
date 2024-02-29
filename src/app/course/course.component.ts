@@ -53,11 +53,12 @@ export class CourseComponent implements OnInit, AfterViewInit {
             switchMap((searchedFor) => createHttpObservableForCourses(`http://localhost:9001/api/lessons?courseId=${this.courseId}&pageSize=${6}&filter=${searchedFor}`)),
             map((resBody) => resBody['payload']));
 
-        //this.lessons$ = concat(this.loadLessons(), searchLessons$)
+        this.lessons$ = concat(this.loadLessons(), searchLessons$)
 
         //Instead if concat 
         //if we are calling same API only search values are different
         //then we can provide initial search value with start with operator 
+        /****
         this.lessons$ = fromEvent(this.input.nativeElement, 'keyup').pipe(
             map((event: Event) => (event.target as HTMLInputElement).value),
             startWith(''),
@@ -65,6 +66,8 @@ export class CourseComponent implements OnInit, AfterViewInit {
             distinctUntilChanged(),
             switchMap((searchedFor) => createHttpObservableForCourses(`http://localhost:9001/api/lessons?courseId=${this.courseId}&pageSize=${6}&filter=${searchedFor}`)),
             map((resBody) => resBody['payload']));
+
+        ****/
 
 
     }
